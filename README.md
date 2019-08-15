@@ -130,3 +130,6 @@ ip-10-YYY-YYY-YYY.ap-northeast-2.compute.internal   Ready     <none>    2m15s   
 - [terraform-aws-modules/terraform-aws-eks](https://github.com/terraform-aws-modules/terraform-aws-eks) 
 - [Deploying Kubernetes Dashboard on AWS EKS](https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/dashboard-tutorial.html)
 
+## Credits
+
+- [@torreswoo](http://github.com/torreswoo) - Kakao Mobility Data Engineer
