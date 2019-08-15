@@ -12,17 +12,18 @@ SSH Key `aws_infra_root_key` 를 패스워드 없이 만들고 AWS 에 등록합
 - [Github Guide](https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 - [SSH Key Import in AWS Console](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#how-to-generate-your-own-key-and-import-it-to-aws)
 
-```
+```bash
 # AWS 커맨드 라인 툴 설치 
 pip install --upgrade awscli
 
 # AWS 크레덴셜 설정
 aws configure
 
-# SSH 키 페어 생성하기 
+# SSH 키 페어 생성하기 - 패스워드 입력하지 않고 (엔터) 
 mkdir ~/.ssh || true 
 cd ~/.ssh
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+
 Enter a file in which to save the key (/Users/you/.ssh/id_rsa): aws_infra_root_key
 
 # SSH Public Key AWS 로 가져오기 

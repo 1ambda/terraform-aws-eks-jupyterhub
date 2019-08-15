@@ -12,17 +12,18 @@ Generate your ssh key named `aws_infra_root_key` without password and import it 
 - [Github Guide](https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 - [SSH Key Import in AWS Console](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#how-to-generate-your-own-key-and-import-it-to-aws)
 
-```
+```bash
 # Install AWS CLI
 pip install --upgrade awscli
 
 # configure AWS credential
 aws configure
 
-# Generate SSH Key
+# Generate SSH Key (without password - input enter)
 mkdir ~/.ssh || true 
 cd ~/.ssh
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+
 Enter a file in which to save the key (/Users/you/.ssh/id_rsa): aws_infra_root_key
 
 # Import SSH Public Key into AWS
