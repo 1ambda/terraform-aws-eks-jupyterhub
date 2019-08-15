@@ -32,6 +32,8 @@ proxy-public   LoadBalancer   172.20.50.70   XXX-YYYY.ap-northeast-2.elb.amazona
 
 Then, visit [a load balancer DNS](https://ap-northeast-2.console.aws.amazon.com/ec2/home?region=ap-northeast-2#LoadBalancers:tag:kubernetes.io/cluster/analysis-production=owned;sort=loadBalancerName) which has a tag `kubernetes.io/cluster/analysis-production:owned`
 
+Initial username and password are `1ambda / mypassword`. If you want to add / modify, then update file [jupyter.helm-config.yaml](https://github.com/1ambda/terraform-aws-eks-jupyterhub/blob/master/k8s-jupyter-hub/jupyter.helm-config.yaml#L41-L50)'s auth property and execute `./jupyter.helm-update.sh` again.
+
 ## Update 
 
 Execute this command to update jupyter hub helm chart.
