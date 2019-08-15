@@ -7,6 +7,7 @@ aws eks update-kubeconfig --name analysis-production
 RELEASE=jupyterhub
 NAMESPACE=jupyter-production
 
+helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
 helm repo update
 
 # https://jupyterhub.github.io/helm-chart/#development-releases-jupyterhub
