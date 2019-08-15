@@ -2,7 +2,7 @@
 
 ## Preparation 
 
-- [x] Modify `{EFS-ID}` value in `k8s.efs-volume.yaml`
+- [x] Modify `{EFS-ID}` value in `k8s.efs-volume.yaml` ([AWS EFS Console](https://ap-northeast-2.console.aws.amazon.com/efs/home?region=ap-northeast-2#/filesystems))
 
 ```bash
 # will create EBS, EFS k8s resources for jupyter hub
@@ -22,7 +22,15 @@ Set these values in in `jupyter.helm-config.yaml`
 
 # monitor jupyter hub pods are being installed 
 kubectl get pods -n jupyter-production -w
+
+# check load balancer DNS
+kubectl --namespace=jupyter-production get svc proxy-public
+
+NAME           TYPE           CLUSTER-IP     EXTERNAL-IP                                                                    PORT(S)                      AGE
+proxy-public   LoadBalancer   172.20.50.70   XXX-YYYY.ap-northeast-2.elb.amazonaws.com   80:30906/TCP,443:32326/TCP   33m
 ```
+
+Then, visit [a load balancer DNS](https://ap-northeast-2.console.aws.amazon.com/ec2/home?region=ap-northeast-2#LoadBalancers:tag:kubernetes.io/cluster/analysis-production=owned;sort=loadBalancerName) which has a tag `kubernetes.io/cluster/analysis-production:owned`
 
 ## Update 
 
