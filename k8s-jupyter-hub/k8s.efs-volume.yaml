@@ -31,6 +31,6 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    # server: {EFS-ID}.efs.ap-northeast-2.amazonaws.com
-    server: fs-f69a0597.efs.ap-northeast-2.amazonaws.com
+    # TODO:
+    server: {EFS-ID}.efs.ap-northeast-2.amazonaws.com
     path: "/"
