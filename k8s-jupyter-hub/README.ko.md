@@ -32,6 +32,8 @@ proxy-public   LoadBalancer   172.20.50.70   XXX-YYYY.ap-northeast-2.elb.amazona
 
 만들어진 Jupyter [Load Balancer DNS](https://ap-northeast-2.console.aws.amazon.com/ec2/home?region=ap-northeast-2#LoadBalancers:tag:kubernetes.io/cluster/analysis-production=owned;sort=loadBalancerName) 를 브라우저에서 방문합니다.
 
+초기 사용자 / 패스워드는 `1ambda / mypassword` 입니다. 변경을 원하면 [jupyter.helm-config.yaml](https://github.com/1ambda/terraform-aws-eks-jupyterhub/blob/master/k8s-jupyter-hub/jupyter.helm-config.yaml#L41-L50) 파일 내의 `auth` 수정 한 후 `jupyter.helm-update.sh` 를 실행합니다.
+
 ## Update 
 
 jupyter hub helm chart 를 업데이트 하려면 아래의 커맨드를 실행합니다. 
