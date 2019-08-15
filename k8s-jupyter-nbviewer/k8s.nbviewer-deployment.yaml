@@ -1,0 +1,118 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nbviewer-entrypoint
+  namespace: jupyter-production
+data:
+  entrypoint.sh: |-
+    #!/bin/bash
+
+    # https://github.com/jupyter/nbviewer/blob/01791f72131c88c5db75bc86c96f2fce99ed51d8/nbviewer/app.py#L286
+    # run nbviewer
+    python3 -m nbviewer --port=8080 --localfiles=/mnt/efs-jupyter/notebook --base_url=/services/nbviewer --debug --no-cache --frontpage=/bin/frontpage.json
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nbviewer-frontpage
+  namespace: jupyter-production
+data:
+  frontpage.json: |-
+    {
+      "title": "",
+      "subtitle": "Jupyter Notebook Viewer",
+      "text": ":)",
+      "show_input": false,
+      "sections": [
+        {
+          "links":[
+            {
+              "text": "Github - 1ambda",
+              "target": "http://github.com/1ambda",
+              "img": "https://github.com/ashleymcnamara/gophers/blob/master/MovingGopher.png?raw=true"
+            }
+          ]
+        }
+      ]
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    configmap.reloader.stakater.com/reload: "nbviewer-entrypoint,nbviewer-frontpage"
+  name: nbviewer
+  namespace: jupyter-production
+  labels:
+    app: nbviewer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nbviewer
+  template:
+    metadata:
+      labels:
+        app: nbviewer
+    spec:
+      nodeSelector:
+        eks-node-group: jupyter-system
+
+      containers:
+        - name: nbviewer
+          image: jupyter/nbviewer
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          command: ["/bin/entrypoint.sh"]
+          volumeMounts:
+            - name: configmap-volume-entrypoint
+              mountPath: /bin/entrypoint.sh
+              readOnly: true
+              subPath: entrypoint.sh
+            - name: configmap-volume-frontpage
+              mountPath: /bin/frontpage.json
+              readOnly: true
+              subPath: frontpage.json
+            - name: efs-jupyter-shared
+              mountPath: /mnt/efs-jupyter
+              subPath: ''
+              readOnly: false
+          env:
+            - name: JUPYTERHUB_API_TOKEN
+              value: ""
+            - name: JUPYTERHUB_API_URL
+              value: "http://hub:8081/hub/api"
+            - name: JUPYTERHUB_BASE_URL
+              value: "" # TODO
+            - name: JUPYTERHUB_SERVICE_NAME
+              value: "nbviewer"
+            - name: JUPYTERHUB_SERVICE_PREFIX
+              value: "/services/nbviewer"
+      volumes:
+        - name: configmap-volume-entrypoint
+          configMap:
+            defaultMode: 0777
+            name: nbviewer-entrypoint
+        - name: configmap-volume-frontpage
+          configMap:
+            defaultMode: 0777
+            name: nbviewer-frontpage
+        - name: efs-jupyter-shared
+          persistentVolumeClaim:
+            claimName: efs-jupyter-shared
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nbviewer
+  namespace: jupyter-production
+spec:
+  selector:
+    app: nbviewer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

@@ -1,0 +1,200 @@
+proxy:
+  nodeSelector:
+    eks-node-group: jupyter-system
+
+  secretToken: "9bbc5f2023e3ebf70d9a490857eaf194d9ff5e32e9685a918be7fda769b951ec" # randomly generated
+  service:
+    type: LoadBalancer
+
+    # https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/#aws
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-internal: "false"
+      service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: "Terraform=false,Kubernetes=true,Environment=production,Service=jupyterhub"
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "True"
+      # service.beta.kubernetes.io/aws-load-balancer-extra-security-groups: ""
+
+      # ELB: https://kubernetes.io/docs/concepts/services-networking/service/#elb-access-logs-on-aws
+      service.beta.kubernetes.io/aws-load-balancer-access-log-enabled: "false"
+
+  # https:
+  #   enabled: false
+  #   type: offload
+
+
+rbac:
+  enabled: true
+debug:
+  enabled: false
+
+cull:
+  enabled: true
+  users: false
+  timeout: 7200 # 2 Hours
+  every: 600
+  concurrency: 10
+  maxAge: 43200 # 12 Hours
+
+auth:
+  # https://zero-to-jupyterhub.readthedocs.io/en/latest/authentication.html
+  admin:
+    access: true # access all users' notebooks
+    users:
+      - 1ambda
+  whitelist:
+    users:
+      - 1ambda
+      - torreswoo
+
+  type: dummy
+  dummy:
+    password: 'mypassword'
+
+  # type: github
+  # github:
+  #   clientId: ""
+  #   clientSecret: ""
+  #   callbackUrl: ""
+
+hub:
+  nodeSelector:
+    eks-node-group: jupyter-system
+
+  extraEnv:
+    JUPYTER_ENABLE_LAB: 1
+  extraConfig:
+    # c.KubeSpawner.args = ['--allow-root']
+    spawner: |
+      c.Spawner.cmd = ['jupyter-labhub']
+    # services: |
+    #   c.JupyterHub.services = [
+    #       {
+    #           'name': 'nbviewer',
+    #           'url': 'http://nbviewer:8080',
+    #           'admin': True,
+    #           'api_token': '',
+    #       }
+    #   ]
+
+# refs
+# - https://github.com/manics/ome-kubernetes-apps/blob/a50a549079b731c2d0d6faa1d63a158478648530/jupyterhub-internal/zero-to-jupyterhub-config.yml
+singleuser:
+  nodeSelector:
+    eks-node-group: jupyter-compute-cpu
+
+  lifecycleHooks:
+    postStart:
+      exec:
+        command:
+          - "sh"
+          - "-c"
+          - >
+            if [ ! -f /home/jovyan/.condarc ]; then
+              echo "envs_dirs:" >> /home/jovyan/.condarc
+              echo "  - /home/jovyan/conda-envs/" >> /home/jovyan/.condarc
+              conda config --add channels conda-forge
+            fi
+
+  storage:
+    homeMountPath: '/home/jovyan'
+    capacity: 25Gi
+    dynamic:
+      storageClass: jupyter-container
+
+    #    type: "static"
+    #    static:
+    #      pvcName: "efs-jupyter-shared"
+    #      subPath: 'home/{username}'
+
+    extraVolumes:
+      - name: jupyterhub-shared
+        persistentVolumeClaim:
+          claimName: efs-jupyter-shared
+    extraVolumeMounts:
+      - name: jupyterhub-shared
+        subPath: 'notebook/{username}' # ${EFS_HOME}/notebook/${username}
+        mountPath: /home/jovyan/shared # ${LOCAL)HOME}/shared
+        readOnly: false
+
+  memory:
+    limit: 6G
+    guarantee: 3G
+  cpu:
+    limit: 3
+    cpu_guarantee: 1.5
+
+  # disable AWS metadata API
+  cloudMetadata:
+    enabled: false
+
+  # Defines the default image
+  image:
+    name: jupyter/minimal-notebook
+    tag: 83ed2c63671f
+
+  # ref (tags) - https://hub.docker.com/r/jupyter/minimal-notebook/tags
+  # ref (properties example) - https://gitlab.nautilus.optiputer.net/crawld/jupyterlab/blob/82e99720207896eb6c42721d35108d4c6a8c371f/nautilus-hub/values.yaml
+  # ref (properties) - https://github.com/jupyterhub/jupyterhub/blob/master/docs/source/reference/spawners.md
+  profileList:
+    - display_name: "기본 노트북 - 튜닝의 끝은 순정 (Python 3)"
+      description: "성능: CPU 3, Memory 6 GB"
+      kubespawner_override:
+        image: jupyter/minimal-notebook:83ed2c63671f
+        cpu_limit: 3
+        cpu_guarantee: 1.5
+        mem_limit: '6G'
+        mem_guarantee: '3G'
+
+    - display_name: "머신러닝 노트북 (Python 3, tensorflow 1.13, keras 2.2)"
+      description: "성능: CPU 3, Memory 6 GB"
+      kubespawner_override:
+        image: jupyter/tensorflow-notebook:abdb27a6dfbb
+        cpu_limit: 4
+        cpu_guarantee: 3
+        mem_limit: '7G'
+        mem_guarantee: '6G'
+
+    # - display_name: "PySpark 노트북 (Python 3, PySpark 2.4.3)"
+    #   description: "성능: CPU 4, Memory 8 GB"
+    #   kubespawner_override:
+    #     image: jupyter/pyspark-notebook:abdb27a6dfbb
+    #     cpu_limit: 4
+    #     cpu_guarantee: 3
+    #     mem_limit: '7G'
+    #     mem_guarantee: '6G'
+
+    # - display_name: "Scala Spark 노트북 (Spark 2.4, Toree 0.3)"
+    #   description: "성능: CPU 4, Memory 8 GB"
+    #   kubespawner_override:
+    #     image: jupyter/all-spark-notebook:abdb27a6dfbb
+    #     cpu_limit: 4
+    #     cpu_guarantee: 3
+    #     mem_limit: '7G'
+    #     mem_guarantee: '6G'
+    #
+    # - display_name: "데이터 분석용 노트북 - 초심자 패키지 (Python 3, pandas, scikit-learn)"
+    #   description: "성능: CPU 3, Memory 6 GB"
+    #   kubespawner_override:
+    #     image: jupyter/scipy-notebook:83ed2c63671f
+    #     cpu_limit: 3
+    #     cpu_guarantee: 1.5
+    #     mem_limit: '6G'
+    #     mem_guarantee: '3G'
+
+    # - display_name: "데이터 분석용 노트북 - 다언어 지원 (Python 3, R 3.5, Julia 1.1.0)"
+    #   description: "성능: CPU 3, Memory 6 GB"
+    #   kubespawner_override:
+    #     image: jupyter/datascience-notebook:83ed2c63671f
+    #     cpu_limit: 3
+    #     cpu_guarantee: 1.5
+    #     mem_limit: '6G'
+    #     mem_guarantee: '3G'
+
+    # - display_name: "R 언어 노트북 (R 3.5)"
+    #   description: "성능: CPU 3, Memory 6 GB"
+    #   kubespawner_override:
+    #     image: jupyter/r-notebook:abdb27a6dfbb
+    #     cpu_limit: 3
+    #     cpu_guarantee: 1.5
+    #     mem_limit: '6G'
+    #     mem_guarantee: '3G'
+

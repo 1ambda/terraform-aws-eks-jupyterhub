@@ -1,0 +1,36 @@
+---
+# PVC: SHARED
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: efs-jupyter-shared
+  namespace: jupyter-production
+  labels:
+    storage: efs-jupyter
+
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+
+---
+# PV: SHARED
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: efs-jupyter-shared
+  namespace: jupyter-production
+  labels:
+    storage: efs-jupyter
+spec:
+  capacity:
+    storage: 200Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    # server: {EFS-ID}.efs.ap-northeast-2.amazonaws.com
+    server: fs-f69a0597.efs.ap-northeast-2.amazonaws.com
+    path: "/"
