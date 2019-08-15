@@ -2,7 +2,7 @@
 
 ## Preparation 
 
-- [x] `k8s.efs-volume.yaml` 파일 내의 `{EFS-ID}` 값을 수정
+- [x] `k8s.efs-volume.yaml` 파일 내의 `{EFS-ID}` 값을 수정 ([AWS EFS Console](https://ap-northeast-2.console.aws.amazon.com/efs/home?region=ap-northeast-2#/filesystems))
 
 ```bash
 # Jupyter Hub 를 위한 EBS, EFS k8s 리소스를 생성 
@@ -22,7 +22,15 @@
 
 # jupyter hub pod 들이 생성되고 있는지 확인 
 kubectl get pods -n jupyter-production -w
+
+# 로드밸런서 DNS 확인
+kubectl --namespace=jupyter-production get svc proxy-public
+
+NAME           TYPE           CLUSTER-IP     EXTERNAL-IP                                                                    PORT(S)                      AGE
+proxy-public   LoadBalancer   172.20.50.70   XXX-YYYY.ap-northeast-2.elb.amazonaws.com   80:30906/TCP,443:32326/TCP   33m
 ```
+
+만들어진 Jupyter [Load Balancer DNS](https://ap-northeast-2.console.aws.amazon.com/ec2/home?region=ap-northeast-2#LoadBalancers:tag:kubernetes.io/cluster/analysis-production=owned;sort=loadBalancerName) 를 브라우저에서 방문합니다.
 
 ## Update 
 
