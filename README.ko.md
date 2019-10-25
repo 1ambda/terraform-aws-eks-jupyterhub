@@ -74,8 +74,8 @@ Terraform 프로젝트에 필요한 AWS 리소스를 준비합니다.
 ### terraform-root-vpc
 
 ```bash
-$ teraform init
-$ teraform plan
+$ terraform init
+$ terraform plan
 
 $ terraform apply
 ```
@@ -83,8 +83,8 @@ $ terraform apply
 ### terraform-root-iam
 
 ```bash
-$ teraform init
-$ teraform plan
+$ terraform init
+$ terraform plan
 
 $ terraform apply
 ```
@@ -92,8 +92,8 @@ $ terraform apply
 ### terraform-root-bastion
 
 ```bash
-$ teraform init
-$ teraform plan
+$ terraform init
+$ terraform plan
 
 $ terraform apply
 ```
@@ -101,8 +101,8 @@ $ terraform apply
 ### terraform-root-eks
 
 ```bash
-$ teraform init
-$ teraform plan
+$ terraform init
+$ terraform plan
 
 $ terraform apply
 
