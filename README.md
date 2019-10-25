@@ -73,8 +73,8 @@ Then prepare AWS resources to apply terraform projects.
 ### terraform-root-vpc
 
 ```bash
-$ teraform init
-$ teraform plan
+$ terraform init
+$ terraform plan
 
 $ terraform apply
 ```
@@ -82,8 +82,8 @@ $ terraform apply
 ### terraform-root-iam
 
 ```bash
-$ teraform init
-$ teraform plan
+$ terraform init
+$ terraform plan
 
 $ terraform apply
 ```
@@ -91,8 +91,8 @@ $ terraform apply
 ### terraform-root-bastion
 
 ```bash
-$ teraform init
-$ teraform plan
+$ terraform init
+$ terraform plan
 
 $ terraform apply
 ```
@@ -100,8 +100,8 @@ $ terraform apply
 ### terraform-root-eks
 
 ```bash
-$ teraform init
-$ teraform plan
+$ terraform init
+$ terraform plan
 
 $ terraform apply
 
