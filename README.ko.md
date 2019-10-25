@@ -13,7 +13,7 @@ SSH Key `aws_infra_root_key` 를 패스워드 없이 만들고 AWS 에 등록합
 - [SSH Key Import in AWS Console](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#how-to-generate-your-own-key-and-import-it-to-aws)
 
 ```bash
-# AWS 커맨드 라인 툴 설치 
+# AWS 커맨드 라인 툴 설치 - 가상환경 내에 설치하시면 환경이 꼬일 수 있습니다.
 pip install --upgrade awscli
 
 # AWS 크레덴셜 설정
@@ -89,15 +89,6 @@ $ terraform plan
 $ terraform apply
 ```
 
-### terraform-root-bastion
-
-```bash
-$ terraform init
-$ terraform plan
-
-$ terraform apply
-```
-
 ### terraform-root-eks
 
 ```bash
@@ -115,6 +106,18 @@ ip-10-XXX-XXX.XXX.ap-northeast-2.compute.internal   Ready     <none>    2m15s   
 ip-10-YYY-YYY-YYY.ap-northeast-2.compute.internal   Ready     <none>    2m15s     v1.13.7-eks-c57ff8
 ```
 
+### terraform-root-bastion
+
+> after EKS apply
+
+```bash
+$ terraform init
+$ terraform plan
+
+$ terraform apply
+```
+
+
 ## Setup Kubernetes Applications
 
 - [x] [k8s-system-helm](./k8s-system-helm/README.ko.md)
@@ -125,6 +128,32 @@ ip-10-YYY-YYY-YYY.ap-northeast-2.compute.internal   Ready     <none>    2m15s   
 - [ ] [k8s-system-autoscaler](./k8s-system-autoscaler/README.ko.md)
 - [x] [k8s-jupyter-hub](./k8s-jupyter-hub/README.ko.md)
 - [x] [k8s-jupyter-nbviewer](./k8s-jupyter-nbviewer/README.ko.md)
+
+## Resource Destroy
+
+### terraform-root-bastion
+
+```bash
+$ terraform destroy
+```
+
+### terraform-root-eks
+
+```bash
+$ terraform destroy
+```
+
+### terraform-root-iam
+
+```bash
+$ terraform destroy
+```
+
+### terraform-root-vpc
+
+```bash
+$ terraform destroy
+```
 
 ## References 
 
