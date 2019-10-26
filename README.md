@@ -1,6 +1,7 @@
 # terraform-eks-jupyterhub
 
-[한국어 버전 설명서](./README.ko.md)
+- [한국어 버전 실습 가이드](https://docs.google.com/document/d/1vaHrVyKrWuOZe1yXGPnTwm4SsvbtCC-xPhAN-i4MVAg/edit?usp=sharing)
+- [한국어 버전 설명 슬라이드](bit.ly/2IMGeVZ)
 
 <br/>
 
