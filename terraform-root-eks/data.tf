@@ -6,7 +6,7 @@ data "terraform_remote_state" "vpc" {
     key            = "terraform-root-vpc/tfstate"
     region         = "ap-northeast-2"
     encrypt        = true
-    dynamodb_table = "terraform-lock-resource"
+    dynamodb_table = "terraform-resource-lock"
   }
 }
 
@@ -18,6 +18,6 @@ data "terraform_remote_state" "iam" {
     key            = "terraform-root-iam/tfstate"
     region         = "ap-northeast-2"
     encrypt        = true
-    dynamodb_table = "terraform-lock-iam"
+    dynamodb_table = "terraform-resource-lock"
   }
 }
