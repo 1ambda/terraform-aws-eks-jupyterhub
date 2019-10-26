@@ -14,7 +14,7 @@ Generate your ssh key named `aws_infra_root_key` without password and import it 
 - [SSH Key Import in AWS Console](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#how-to-generate-your-own-key-and-import-it-to-aws)
 
 ```bash
-# Install AWS CLI
+# Install AWS CLI - Do not install in virtualenv
 pip install --upgrade awscli
 
 # configure AWS credential
@@ -89,15 +89,6 @@ $ terraform plan
 $ terraform apply
 ```
 
-### terraform-root-bastion
-
-```bash
-$ terraform init
-$ terraform plan
-
-$ terraform apply
-```
-
 ### terraform-root-eks
 
 ```bash
@@ -115,6 +106,17 @@ ip-10-XXX-XXX.XXX.ap-northeast-2.compute.internal   Ready     <none>    2m15s   
 ip-10-YYY-YYY-YYY.ap-northeast-2.compute.internal   Ready     <none>    2m15s     v1.13.7-eks-c57ff8
 ```
 
+### terraform-root-bastion
+
+> after EKS apply
+
+```bash
+$ terraform init
+$ terraform plan
+
+$ terraform apply
+```
+
 ## Setup Kubernetes Applications
 
 - [x] [k8s-system-helm](./k8s-system-helm)
@@ -125,6 +127,32 @@ ip-10-YYY-YYY-YYY.ap-northeast-2.compute.internal   Ready     <none>    2m15s   
 - [ ] [k8s-system-autoscaler](./k8s-system-autoscaler)
 - [x] [k8s-jupyter-hub](./k8s-jupyter-hub)
 - [x] [k8s-jupyter-nbviewer](./k8s-jupyter-nbviewer)
+
+## Resource Destroy
+
+### terraform-root-bastion
+
+```bash
+$ terraform destroy
+```
+
+### terraform-root-eks
+
+```bash
+$ terraform destroy
+```
+
+### terraform-root-iam
+
+```bash
+$ terraform destroy
+```
+
+### terraform-root-vpc
+
+```bash
+$ terraform destroy
+```
 
 ## References 
 

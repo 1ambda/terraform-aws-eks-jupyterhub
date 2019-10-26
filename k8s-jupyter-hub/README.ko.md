@@ -14,7 +14,7 @@
 `jupyter.helm-config.yaml` 파일 내의 다음 값들을 수정
 
 - [ ] `secretToken`
-- [x] `service.beta.kubernetes.io/aws-load-balancer-extra-security-groups`
+- [x] `service.beta.kubernetes.io/aws-load-balancer-extra-security-groups (eks-public-lb-production Group ID)`
 
 ```bash
 # jupyterhub helm chart 설치
