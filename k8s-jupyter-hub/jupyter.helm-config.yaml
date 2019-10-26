@@ -152,6 +152,19 @@ singleuser:
         cpu_guarantee: 3
         mem_limit: '7G'
         mem_guarantee: '6G'
+        extra_resource_limits:
+          nvidia.com/gpu: "1"
+
+#    - display_name: "GPU 머신러닝 노트북 (Python 3, tensorflow 1.13, keras 2.2)"
+#      description: "성능: GPU 1, CPU 2, Memory 7 GB"
+#      kubespawner_override:
+#        image: jupyter/tensorflow-notebook:abdb27a6dfbb
+#        cpu_limit: 2
+#        cpu_guarantee: 1
+#        mem_limit: '7G'
+#        mem_guarantee: '6G'
+#        extra_resource_limits:
+#          nvidia.com/gpu: "1"
 
     # - display_name: "PySpark 노트북 (Python 3, PySpark 2.4.3)"
     #   description: "성능: CPU 4, Memory 8 GB"
