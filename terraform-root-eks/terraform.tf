@@ -6,7 +6,7 @@ terraform {
     key            = "terraform-root-eks/tfstate"
     region         = "ap-northeast-2"
     encrypt        = true
-    dynamodb_table = "terraform-lock-resource"
+    dynamodb_table = "terraform-resource-lock"
   }
 }
 
