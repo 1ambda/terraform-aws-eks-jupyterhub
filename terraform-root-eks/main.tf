@@ -1,14 +1,14 @@
-module "efs_production" {
-  source = "./module-efs_PROD"
-
-  environment = local.env_production_lower
-
-  vpc_id               = local.vpc_prod_id
-  subnet_id_private_2a = local.vpc_prod_private_subnet_id_a
-  subnet_id_private_2b = local.vpc_prod_private_subnet_id_b
-  subnet_id_private_2c = local.vpc_prod_private_subnet_id_c
-  availability_zones   = var.availability_zones
-}
+//module "efs_production" {
+//  source = "./module-efs_PROD"
+//
+//  environment = local.env_production_lower
+//
+//  vpc_id               = local.vpc_prod_id
+//  subnet_id_private_2a = local.vpc_prod_private_subnet_id_a
+//  subnet_id_private_2b = local.vpc_prod_private_subnet_id_b
+//  subnet_id_private_2c = local.vpc_prod_private_subnet_id_c
+//  availability_zones   = var.availability_zones
+//}
 
 module "eks_extra_production" {
   source = "./module-eks-extra_PROD"
@@ -16,7 +16,7 @@ module "eks_extra_production" {
   environment      = local.env_production_lower
   project_analysis = local.project_analysis
 
-  sg_id_efs_jupyter_shared = module.efs_production.sg_id_efs_jupyter_shared
+//  sg_id_efs_jupyter_shared = module.efs_production.sg_id_efs_jupyter_shared
 
   vpc_id = local.vpc_prod_id
 }

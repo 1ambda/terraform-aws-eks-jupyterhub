@@ -80,15 +80,15 @@ resource "aws_security_group_rule" "eks_worker_analysis_allow_tcp_from_cluster" 
 ## Security Rule - From EKS Worker
 ##
 
-resource "aws_security_group_rule" "efs_jupyter_shared_allow_efs_from_eks_worker" {
-  type      = "ingress"
-  from_port = local.port.efs
-  to_port   = local.port.efs
-  protocol  = "tcp"
-
-  source_security_group_id = aws_security_group.eks_worker_analysis.id
-  security_group_id = var.sg_id_efs_jupyter_shared
-
-  description = "eks-worker-analysis"
-}
+//resource "aws_security_group_rule" "efs_jupyter_shared_allow_efs_from_eks_worker" {
+//  type      = "ingress"
+//  from_port = local.port.efs
+//  to_port   = local.port.efs
+//  protocol  = "tcp"
+//
+//  source_security_group_id = aws_security_group.eks_worker_analysis.id
+//  security_group_id = var.sg_id_efs_jupyter_shared
+//
+//  description = "eks-worker-analysis"
+//}
 
