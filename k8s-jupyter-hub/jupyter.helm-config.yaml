@@ -105,15 +105,15 @@ singleuser:
     #      pvcName: "efs-jupyter-shared"
     #      subPath: 'home/{username}'
 
-    extraVolumes:
-      - name: jupyterhub-shared
-        persistentVolumeClaim:
-          claimName: efs-jupyter-shared
-    extraVolumeMounts:
-      - name: jupyterhub-shared
-        subPath: 'notebook/{username}' # ${EFS_HOME}/notebook/${username}
-        mountPath: /home/jovyan/shared # ${LOCAL)HOME}/shared
-        readOnly: false
+#    extraVolumes:
+#      - name: jupyterhub-shared
+#        persistentVolumeClaim:
+#          claimName: efs-jupyter-shared
+#    extraVolumeMounts:
+#      - name: jupyterhub-shared
+#        subPath: 'notebook/{username}' # ${EFS_HOME}/notebook/${username}
+#        mountPath: /home/jovyan/shared # ${LOCAL)HOME}/shared
+#        readOnly: false
 
   memory:
     limit: 6G

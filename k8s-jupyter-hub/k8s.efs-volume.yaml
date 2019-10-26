@@ -16,21 +16,21 @@ spec:
     requests:
       storage: 20Gi
 
----
-# PV: SHARED
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: efs-jupyter-shared
-  namespace: jupyter-production
-  labels:
-    storage: efs-jupyter
-spec:
-  capacity:
-    storage: 200Gi
-  accessModes:
-    - ReadWriteMany
-  nfs:
-    # TODO:
-    server: {EFS-ID}.efs.ap-northeast-2.amazonaws.com
-    path: "/"
+#---
+## PV: SHARED
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: efs-jupyter-shared
+#  namespace: jupyter-production
+#  labels:
+#    storage: efs-jupyter
+#spec:
+#  capacity:
+#    storage: 200Gi
+#  accessModes:
+#    - ReadWriteMany
+#  nfs:
+#    # TODO:
+#    server: {EFS-ID}.efs.ap-northeast-2.amazonaws.com
+#    path: "/"
