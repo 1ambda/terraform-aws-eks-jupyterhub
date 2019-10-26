@@ -14,7 +14,7 @@
 Set these values in in `jupyter.helm-config.yaml`
 
 - [ ] `secretToken`
-- [x] `service.beta.kubernetes.io/aws-load-balancer-extra-security-groups`
+- [x] `service.beta.kubernetes.io/aws-load-balancer-extra-security-groups (eks-public-lb-production Group ID)`
 
 ```bash
 # install jupyterhub helm chart
